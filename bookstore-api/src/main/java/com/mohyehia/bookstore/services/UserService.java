@@ -41,6 +41,7 @@ public class UserService implements UserDetailsService {
 	}
 	
 	public ApiUser save(ApiUser user, String roleName) {
+		if(exists(user.getEmail())) return null;
 		user.setPassword(passwordEncoder().encode(user.getPassword()));
 		Role role = roleRepository.findByName(roleName);
 		user.setRoles(new HashSet<>(Arrays.asList(role)));
@@ -49,6 +50,10 @@ public class UserService implements UserDetailsService {
 	
 	public List<ApiUser> findAll() {
 		return userRepository.findAll();
+	}
+	
+	private boolean exists(String email) {
+		return userRepository.findByEmail(email) != null;
 	}
 
 }
