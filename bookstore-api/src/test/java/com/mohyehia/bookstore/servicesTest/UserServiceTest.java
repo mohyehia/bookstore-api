@@ -1,10 +1,13 @@
 package com.mohyehia.bookstore.servicesTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,6 +71,26 @@ public class UserServiceTest {
 		
 		// Assertion
 		assertThat(createdUser.getEmail()).isEqualTo(user.getEmail());
+	}
+	
+	@Test
+	public void whenLoadUserByUsername_returnUser() {
+		// Mockup data
+		ApiUser apiUser = new ApiUser("moh@mail.com", "moh", "yehia", "pass", "0106552154");
+		
+		// Given
+		given(userRepository.findByEmail(anyString())).willReturn(Optional.ofNullable(apiUser));
+		ApiUser createdUser = (ApiUser) userService.loadUserByUsername("moh@mail.com");
+		
+		// Assertion
+		assertThat(createdUser.getPhone()).isEqualTo(apiUser.getPhone());
+	}
+	
+	@Test(expected = NoSuchElementException.class)
+	public void whenInvalidUsername_userNotFound() {
+		given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
+		
+		userService.loadUserByUsername("invalid email");
 	}
 	
 }

@@ -34,7 +34,7 @@ public class UserService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		ApiUser user = userRepository.findByEmail(username);
+		ApiUser user = userRepository.findByEmail(username).get();
 		if(user == null) 
 			throw new UsernameNotFoundException("Username {" + username + "} not found!");
 		return user;
