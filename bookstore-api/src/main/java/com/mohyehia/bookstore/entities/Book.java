@@ -33,8 +33,17 @@ public class Book {
 	
 	private String image;
 
-	public Book() {}
+	public Book() {
+		active = true;
+	}
 	
+	public Book(String title, String author, String publisher) {
+		this();
+		this.title = title;
+		this.author = author;
+		this.publisher = publisher;
+	}
+
 	public Long getId() {
 		return id;
 	}
