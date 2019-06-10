@@ -2,6 +2,8 @@ package com.mohyehia.bookstore.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +33,7 @@ public class BookController {
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(value = {"", "/"})
-	public ResponseEntity<Book> saveBook(@RequestParam("image") MultipartFile file, @RequestPart Book book) {
-		if(bookService.findByTitle(book.getTitle()) != null)
-			return new ResponseEntity<>(null, HttpStatus.CONFLICT);
-		
+	public ResponseEntity<Book> saveBook(@RequestParam("image") MultipartFile file, @Valid @RequestPart Book book) {
 		String imageName = ImageUtils.uploadImage(file);
 		if(imageName == null)
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -57,7 +56,7 @@ public class BookController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book){
 		book.setId(id);
-		return new ResponseEntity<>(bookService.save(book), HttpStatus.OK);
+		return new ResponseEntity<>(bookService.updateBook(book), HttpStatus.OK);
 	}
 	
 	@PreAuthorize("hasRole('ADMIN')")

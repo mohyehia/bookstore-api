@@ -1,5 +1,7 @@
 package com.mohyehia.bookstore.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +35,7 @@ public class AuthController {
 	private AuthenticationManager authenticationManager;
 	
 	@PostMapping(value = "/signup")
-	public ResponseEntity<ApiUser> signup(@RequestBody ApiUser user){
+	public ResponseEntity<ApiUser> signup(@Valid @RequestBody ApiUser user){
 		ApiUser apiUser = userService.save(user, "ROLE_USER");
 		if(apiUser == null)
 			return new ResponseEntity<>(null, HttpStatus.CONFLICT);

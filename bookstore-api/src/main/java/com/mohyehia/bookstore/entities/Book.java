@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 
 @Entity(name = "BOOKS")
 public class Book {
@@ -13,6 +14,7 @@ public class Book {
 	@Column(name = "ID", updatable = false, nullable = false)
 	private Long id;
 	
+	@NotEmpty(message = "Book title can not be empty")
 	private String title;
 	private String author;
 	private String publisher;

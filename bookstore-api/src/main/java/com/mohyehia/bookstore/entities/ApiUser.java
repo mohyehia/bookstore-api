@@ -33,7 +33,7 @@ public class ApiUser implements UserDetails{
 	private Long id;
 	
 	@Column(name = "EMAIL")
-	@NotEmpty
+	@NotEmpty(message = "Email address can not be empty")
 	private String email;
 	
 	@Column(name = "FIRST_NAME")
@@ -45,7 +45,7 @@ public class ApiUser implements UserDetails{
 	private String lastName;
 	
 	@Column(name = "PASSWORD")
-	@NotEmpty
+	@NotEmpty(message = "Password can not be empty")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	

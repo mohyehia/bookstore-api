@@ -9,7 +9,6 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -22,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.mohyehia.bookstore.entities.Book;
+import com.mohyehia.bookstore.exceptions.NotFoundException;
 import com.mohyehia.bookstore.repositories.BookRepository;
 import com.mohyehia.bookstore.services.BookService;
 
@@ -73,7 +73,7 @@ public class BookServiceTest {
 		assertThat(result.getTitle()).isEqualToIgnoringCase("new book");
 	}
 	
-	@Test(expected = NoSuchElementException.class)
+	@Test(expected = NotFoundException.class)
 	public void testFindByInvalidId() {
 		//Given
 		given(bookRepository.findById(anyLong())).willReturn(Optional.empty());
