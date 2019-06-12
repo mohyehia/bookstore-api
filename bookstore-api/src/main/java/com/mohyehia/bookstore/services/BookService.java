@@ -36,7 +36,7 @@ public class BookService {
 	}
 	
 	public Book save(Book book) {
-		if(findByTitle(book.getTitle()) != null)
+		if(exists(book.getTitle()))
 			throw new ConflictException(String.format("An existing book with the same title [%s] was found in database.", book.getTitle()));
 		return bookRepository.save(book);
 	}
@@ -70,5 +70,9 @@ public class BookService {
 	
 	public Book findByTitle(String title) {
 		return bookRepository.findByTitle(title).get();
+	}
+	
+	private boolean exists(String title) {
+		return bookRepository.findByTitle(title).isPresent();
 	}
 }

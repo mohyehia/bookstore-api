@@ -36,9 +36,7 @@ public class AuthController {
 	
 	@PostMapping(value = "/signup")
 	public ResponseEntity<ApiUser> signup(@Valid @RequestBody ApiUser user){
-		ApiUser apiUser = userService.save(user, "ROLE_USER");
-		if(apiUser == null)
-			return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+		ApiUser apiUser = userService.save(user);
 		return new ResponseEntity<>(apiUser, HttpStatus.CREATED);
 	}
 	

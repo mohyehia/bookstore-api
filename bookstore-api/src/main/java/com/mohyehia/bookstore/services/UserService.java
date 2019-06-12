@@ -1,5 +1,6 @@
 package com.mohyehia.bookstore.services;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.mohyehia.bookstore.entities.ApiUser;
 import com.mohyehia.bookstore.entities.Role;
+import com.mohyehia.bookstore.exceptions.ConflictException;
 import com.mohyehia.bookstore.repositories.RoleRepository;
 import com.mohyehia.bookstore.repositories.UserRepository;
 
@@ -40,11 +42,16 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 	
-	public ApiUser save(ApiUser user, String roleName) {
-		if(exists(user.getEmail())) return null;
+	public ApiUser save(ApiUser user) {
+		if(exists(user.getEmail())) 
+			throw new ConflictException(String.format("An existing user account with the same email address [%s] was found in database.", user.getEmail()));
 		user.setPassword(passwordEncoder().encode(user.getPassword()));
-		Role role = roleRepository.findByName(roleName);
-		user.setRoles(new HashSet<>(Arrays.asList(role)));
+		user.setUserPayments(new ArrayList<>());
+		if(user.getRoles() == null) {
+			String roleName = "ROLE_USER";
+			Role role = roleRepository.findByName(roleName);
+			user.setRoles(new HashSet<>(Arrays.asList(role)));
+		}
 		return userRepository.save(user);
 	}
 	
@@ -53,7 +60,7 @@ public class UserService implements UserDetailsService {
 	}
 	
 	private boolean exists(String email) {
-		return userRepository.findByEmail(email) != null;
+		return userRepository.findByEmail(email).isPresent();
 	}
 
 }
