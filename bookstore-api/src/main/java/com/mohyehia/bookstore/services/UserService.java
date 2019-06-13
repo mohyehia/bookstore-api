@@ -1,6 +1,5 @@
 package com.mohyehia.bookstore.services;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -13,14 +12,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mohyehia.bookstore.entities.ApiUser;
 import com.mohyehia.bookstore.entities.Role;
+import com.mohyehia.bookstore.entities.UserBilling;
+import com.mohyehia.bookstore.entities.UserPayment;
 import com.mohyehia.bookstore.exceptions.ConflictException;
 import com.mohyehia.bookstore.repositories.RoleRepository;
+import com.mohyehia.bookstore.repositories.UserPaymentRepository;
 import com.mohyehia.bookstore.repositories.UserRepository;
 
 @Service
+@Transactional
 public class UserService implements UserDetailsService {
 	
 	@Autowired
@@ -28,6 +32,9 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private UserPaymentRepository userPaymentRepository;
 	
 	@Bean
 	private PasswordEncoder passwordEncoder() {
@@ -46,7 +53,6 @@ public class UserService implements UserDetailsService {
 		if(exists(user.getEmail())) 
 			throw new ConflictException(String.format("An existing user account with the same email address [%s] was found in database.", user.getEmail()));
 		user.setPassword(passwordEncoder().encode(user.getPassword()));
-		user.setUserPayments(new ArrayList<>());
 		if(user.getRoles() == null) {
 			String roleName = "ROLE_USER";
 			Role role = roleRepository.findByName(roleName);
@@ -57,6 +63,24 @@ public class UserService implements UserDetailsService {
 	
 	public List<ApiUser> findAll() {
 		return userRepository.findAll();
+	}
+		
+	public ApiUser updateUserBilling(ApiUser user, UserPayment payment, UserBilling billing) {
+		payment.setUserId(user.getId());
+		payment.setUserBilling(billing);
+		payment.setDefaultPayment(true);
+		billing.setUserPayment(payment);
+		return userRepository.save(user);
+	}
+	
+	public void setUserDefaultPayment(ApiUser user, Long userPaymentId) {
+		List<UserPayment> userPayments = userPaymentRepository.findAll();
+		for (UserPayment userPayment : userPayments) {
+			if(userPayment.getId() == userPaymentId)
+				userPayment.setDefaultPayment(true);
+			else userPayment.setDefaultPayment(false);
+			userPaymentRepository.save(userPayment);
+		}
 	}
 	
 	private boolean exists(String email) {

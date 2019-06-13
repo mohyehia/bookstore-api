@@ -3,10 +3,8 @@ package com.mohyehia.bookstore.entities;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -68,9 +65,6 @@ public class ApiUser implements UserDetails{
 		inverseJoinColumns = { @JoinColumn(name = "ROLE_ID") })
 	private Set<Role> roles;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private List<UserPayment> userPayments;
-	
 	public ApiUser() {
 		this.enabled = true;
 		this.created = new Date();
@@ -90,6 +84,10 @@ public class ApiUser implements UserDetails{
 		Set<GrantedAuthority> authorities = new HashSet<>();
 		roles.forEach(role -> authorities.add(new Authority(role.getName())));
 		return authorities;
+	}
+	
+	public Long getId() {
+		return id;
 	}
 
 	@Override
@@ -174,14 +172,6 @@ public class ApiUser implements UserDetails{
 	
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
-	}
-	
-	public List<UserPayment> getUserPayments() {
-		return userPayments;
-	}
-	
-	public void setUserPayments(List<UserPayment> userPayments) {
-		this.userPayments = userPayments;
 	}
 	
 }

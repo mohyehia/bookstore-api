@@ -5,11 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class UserPayment {
@@ -25,10 +21,7 @@ public class UserPayment {
 	private String holderName;
 	private boolean defaultPayment;
 	
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	@JsonIgnore
-	private ApiUser user;
+	private Long userId;
 	
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "userPayment")
 	private UserBilling userBilling;
@@ -107,12 +100,12 @@ public class UserPayment {
 		this.defaultPayment = defaultPayment;
 	}
 
-	public ApiUser getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(ApiUser user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public UserBilling getUserBilling() {
