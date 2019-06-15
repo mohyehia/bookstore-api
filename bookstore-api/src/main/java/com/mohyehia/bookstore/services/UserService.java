@@ -18,10 +18,12 @@ import com.mohyehia.bookstore.entities.ApiUser;
 import com.mohyehia.bookstore.entities.Role;
 import com.mohyehia.bookstore.entities.UserBilling;
 import com.mohyehia.bookstore.entities.UserPayment;
+import com.mohyehia.bookstore.entities.UserShipping;
 import com.mohyehia.bookstore.exceptions.ConflictException;
 import com.mohyehia.bookstore.repositories.RoleRepository;
 import com.mohyehia.bookstore.repositories.UserPaymentRepository;
 import com.mohyehia.bookstore.repositories.UserRepository;
+import com.mohyehia.bookstore.repositories.UserShippingRepository;
 
 @Service
 @Transactional
@@ -35,6 +37,9 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private UserPaymentRepository userPaymentRepository;
+	
+	@Autowired
+	private UserShippingRepository userShippingRepository;
 	
 	@Bean
 	private PasswordEncoder passwordEncoder() {
@@ -73,13 +78,23 @@ public class UserService implements UserDetailsService {
 		return userRepository.save(user);
 	}
 	
-	public void setUserDefaultPayment(ApiUser user, Long userPaymentId) {
-		List<UserPayment> userPayments = userPaymentRepository.findAll();
+	public void setUserDefaultPayment(Long userId, Long userPaymentId) {
+		List<UserPayment> userPayments = userPaymentRepository.findByUserId(userId);
 		for (UserPayment userPayment : userPayments) {
 			if(userPayment.getId() == userPaymentId)
 				userPayment.setDefaultPayment(true);
 			else userPayment.setDefaultPayment(false);
 			userPaymentRepository.save(userPayment);
+		}
+	}
+	
+	public void setUserDefaultShipping(Long userId, int userShippingId) {
+		List<UserShipping> userShippings = userShippingRepository.findByUserId(userId);
+		for (UserShipping userShipping : userShippings) {
+			if(userShipping.getId() == userShippingId)
+				userShipping.setDefaultShipping(true);
+			else userShipping.setDefaultShipping(false);
+			userShippingRepository.save(userShipping);
 		}
 	}
 	
