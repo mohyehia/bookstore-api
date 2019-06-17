@@ -43,7 +43,6 @@ public class UserPaymentController extends BaseController{
 		return new ResponseEntity<>(userPaymentService.save(userPayment, userBilling), HttpStatus.CREATED);
 	}
 	
-	@PreAuthorize("hasRole('USER')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> removePayment(@PathVariable Long id) {
 		userPaymentService.deleteById(id);
@@ -53,7 +52,7 @@ public class UserPaymentController extends BaseController{
 	@PreAuthorize("hasRole('USER')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> setUserDefaultPayment(@PathVariable Long id) {
-		userService.setUserDefaultPayment(getCurrentUser().getId(), id);
+		userService.setUserDefaultPayment(getCurrentUser(), id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
