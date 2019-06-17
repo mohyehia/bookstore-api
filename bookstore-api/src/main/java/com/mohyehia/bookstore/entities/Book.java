@@ -5,9 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-@Entity(name = "BOOKS")
+@Entity
+@Table(name = "BOOKS")
 public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,24 +17,52 @@ public class Book {
 	private Long id;
 	
 	@NotEmpty(message = "Book title can not be empty")
+	@Column(name = "TITLE")
 	private String title;
+	
+	@Column(name = "AUTHOR")
 	private String author;
+	
+	@Column(name = "PUBLISHER")
 	private String publisher;
+	
+	@Column(name = "PUBLICATION_DATE")
 	private String publicationDate;
+	
+	@Column(name = "LANGUAGE")
 	private String language;
+	
+	@Column(name = "CATEGORY")
 	private String category;
+	
+	@Column(name = "NUM_OF_PAGES")
 	private int numOfPages;
+	
+	@Column(name = "FORMAT")
 	private String format;
+	
+	@Column(name = "ISBN")
 	private String isbn;
+	
+	@Column(name = "SHIPPING_WEIGHT")
 	private double shippingWeight;
+	
+	@Column(name = "LIST_PRICE")
 	private double listPrice;
+	
+	@Column(name = "OUR_PRICE")
 	private double ourPrice;
+	
+	@Column(name = "ACTIVE")
 	private boolean active;
 	
-	@Column(columnDefinition = "text")
+	@Column(columnDefinition = "text", name = "DESCRIPTION")
 	private String description;
+	
+	@Column(name = "IN_STOCK_NUMBER")
 	private int inStockNumber;
 	
+	@Column(name = "IMAGE")
 	private String image;
 
 	public Book() {

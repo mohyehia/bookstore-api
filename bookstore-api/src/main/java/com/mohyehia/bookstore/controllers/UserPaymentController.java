@@ -40,7 +40,7 @@ public class UserPaymentController extends BaseController{
 	public ResponseEntity<UserPayment> addPayment(@RequestBody UserPayment userPayment) {		
 		UserBilling userBilling = userPayment.getUserBilling();
 		userPayment.setUserId(getCurrentUser().getId());
-		return new ResponseEntity<UserPayment>(userPaymentService.save(userPayment, userBilling), HttpStatus.CREATED);
+		return new ResponseEntity<>(userPaymentService.save(userPayment, userBilling), HttpStatus.CREATED);
 	}
 	
 	@PreAuthorize("hasRole('USER')")

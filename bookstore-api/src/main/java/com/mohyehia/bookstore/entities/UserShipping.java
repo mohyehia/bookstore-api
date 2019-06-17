@@ -1,24 +1,45 @@
 package com.mohyehia.bookstore.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "USER_SHIPPING")
 public class UserShipping {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
 	private int id;
+	
+	@Column(name = "SHIPPING_NAME")
 	private String shippingName;
+	
+	@Column(name = "STREET_1")
 	private String street1;
+	
+	@Column(name = "STREET_2")
 	private String street2;
+	
+	@Column(name = "CITY")
 	private String city;
+	
+	@Column(name = "STATE")
 	private String state;
+	
+	@Column(name = "COUNTRY")
 	private String country;
+	
+	@Column(name = "ZIP_CODE")
 	private String zipCode;
+	
+	@Column(name = "DEFAULT_SHIPPING")
 	private boolean defaultShipping;
 	
+	@Column(name = "USER_ID")
 	private Long userId;
 	
 	public UserShipping() {}

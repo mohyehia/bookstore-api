@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.mohyehia.bookstore.entities.ApiUser;
 import com.mohyehia.bookstore.entities.Role;
+import com.mohyehia.bookstore.repositories.RoleRepository;
 import com.mohyehia.bookstore.services.UserService;
 
 @Component
@@ -21,9 +22,20 @@ public class FirstTimeInitializer implements CommandLineRunner{
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private RoleRepository roleRepository;
+	
 	@Override
 	public void run(String... args) throws Exception {
 		// Check if database has users
+		// if no roles found, create admin, user roles
+		Role roleAdmin = new Role("ROLE_ADMIN");
+		Role roleUser = new Role("ROLE_USER");
+		if(roleRepository.findAll().isEmpty()) {
+			logger.info("No roles found. Creating some roles...");
+			roleRepository.save(roleAdmin);
+			roleRepository.save(roleUser);
+		}
 		// If no users exist, create new user with admin role
 		if(userService.findAll().isEmpty()) {
 			logger.info("No user accounts found. Creating some users...");

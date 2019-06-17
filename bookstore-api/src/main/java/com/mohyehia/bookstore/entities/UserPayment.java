@@ -1,26 +1,47 @@
 package com.mohyehia.bookstore.entities;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "USER_PAYMENT")
 public class UserPayment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID")
 	private Long id;
+	
+	@Column(name = "TYPE")
 	private String type;
+
+	@Column(name = "CARD_NAME")
 	private String cardName;
+	
+	@Column(name = "CARD_NUMBER")
 	private String cardNumber;
+	
+	@Column(name = "EXPIRATION_MONTH")
 	private int expirationMonth;
+	
+	@Column(name = "EXPIRATION_YEAR")
 	private int expirationYear;
+	
+	@Column(name = "CVC")
 	private int cvc;
+	
+	@Column(name = "HOLDER_NAME")
 	private String holderName;
+	
+	@Column(name = "DEFAULT_PAYMENT")
 	private boolean defaultPayment;
 	
+	@Column(name = "USER_ID")
 	private Long userId;
 	
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "userPayment")
