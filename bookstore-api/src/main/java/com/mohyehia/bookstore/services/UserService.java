@@ -61,6 +61,10 @@ public class UserService implements UserDetailsService {
 		return userRepository.save(user);
 	}
 	
+	public ApiUser update(ApiUser user) {
+		return userRepository.save(user);
+	}
+	
 	public List<ApiUser> findAll() {
 		return userRepository.findAll();
 	}

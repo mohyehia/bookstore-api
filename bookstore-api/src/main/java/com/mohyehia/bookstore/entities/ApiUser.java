@@ -68,7 +68,6 @@ public class ApiUser implements UserDetails{
 	private Set<Role> roles;
 	
 	public ApiUser() {
-		this.enabled = true;
 		this.created = new Date();
 	}
 	
@@ -126,6 +125,10 @@ public class ApiUser implements UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return enabled;
+	}
+	
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 	public String getFirstName() {
