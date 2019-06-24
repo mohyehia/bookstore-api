@@ -26,6 +26,8 @@ import com.mohyehia.bookstore.services.UserService;
 import com.mohyehia.bookstore.utils.MailUtils;
 import com.mohyehia.bookstore.utils.TokenUtil;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 public class AuthController {
@@ -47,6 +49,7 @@ public class AuthController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
+	@ApiOperation(value = "signup as a new user")
 	@PostMapping(value = "/signup")
 	public ResponseEntity<ApiUser> signup(@Valid @RequestBody ApiUser user){
 		ApiUser apiUser = userService.save(user);
@@ -59,6 +62,7 @@ public class AuthController {
 		return new ResponseEntity<>(apiUser, HttpStatus.CREATED);
 	}
 	
+	@ApiOperation(value = "login with your email address and password")
 	@PostMapping(value = "/login")
 	public ResponseEntity<JwtResponse> signIn(@RequestBody SigninRequest signInRequest) {
 		final Authentication authentication = authenticationManager.authenticate(
@@ -70,6 +74,7 @@ public class AuthController {
 		return new ResponseEntity<>(new JwtResponse(token), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "confirm your account after signup")
 	@GetMapping("/confirm-account/{token}")
 	public ResponseEntity<ApiUser> confirmAccount(@PathVariable String token){
 		ConfirmationToken confirmationToken = confirmationTokenRepository.findByToken(token);

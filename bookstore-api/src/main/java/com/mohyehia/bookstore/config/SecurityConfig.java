@@ -16,7 +16,15 @@ import com.mohyehia.bookstore.filters.AuthFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	private final String[] PUBLIC_ENDPOINTS = {"/api/**/auth/**"};
+	private final String[] PUBLIC_ENDPOINTS = {
+			"/api/**/auth/**",
+			"/v2/api-docs",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"
+		};
 	
 	@Bean
 	@Override

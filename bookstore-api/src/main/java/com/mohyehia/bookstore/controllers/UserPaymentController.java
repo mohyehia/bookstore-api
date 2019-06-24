@@ -20,6 +20,8 @@ import com.mohyehia.bookstore.entities.UserPayment;
 import com.mohyehia.bookstore.services.UserPaymentService;
 import com.mohyehia.bookstore.services.UserService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/api/v1/payments")
 public class UserPaymentController extends BaseController{
@@ -29,12 +31,14 @@ public class UserPaymentController extends BaseController{
 	@Autowired
 	private UserPaymentService userPaymentService;
 	
+	@ApiOperation(value = "get user payments by userId")
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping(value = {"", "/"})
 	public ResponseEntity<List<UserPayment>> findUserPayments() {
 		return new ResponseEntity<>(userPaymentService.findByUserId(getCurrentUser().getId()), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "save new payment to the user")
 	@PreAuthorize("hasRole('USER')")
 	@PostMapping(value = {"", "/"})
 	public ResponseEntity<UserPayment> addPayment(@RequestBody UserPayment userPayment) {		
@@ -43,12 +47,14 @@ public class UserPaymentController extends BaseController{
 		return new ResponseEntity<>(userPaymentService.save(userPayment, userBilling), HttpStatus.CREATED);
 	}
 	
+	@ApiOperation(value = "remove existing payment by its id from database")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> removePayment(@PathVariable Long id) {
 		userPaymentService.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
+	@ApiOperation(value = "update user default payment")
 	@PreAuthorize("hasRole('USER')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> setUserDefaultPayment(@PathVariable Long id) {

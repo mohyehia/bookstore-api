@@ -18,6 +18,8 @@ import com.mohyehia.bookstore.entities.CartItem;
 import com.mohyehia.bookstore.repositories.CartItemRepository;
 import com.mohyehia.bookstore.services.CartService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = {"/api/v1/cart", "/api/v1/cart/"})
 public class CartController extends BaseController{
@@ -27,16 +29,19 @@ public class CartController extends BaseController{
 	@Autowired
 	private CartItemRepository cartItemRepository;
 	
+	@ApiOperation(value = "return shopping cart for a single user by his id")
 	@GetMapping("")
 	public ResponseEntity<List<Cart>> getAll(){
 		return new ResponseEntity<>(cartService.findByUserId(getCurrentUser().getId()), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "get cart details by cartId")
 	@GetMapping("/{cartId}")
 	public ResponseEntity<List<CartItem>> getCartItems(@PathVariable Long cartId){
 		return new ResponseEntity<> (cartItemRepository.findByCartId(cartId), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "save new cart for the user")
 	@PostMapping("")
 	public ResponseEntity<Cart> saveCart(@RequestBody Cart cart){
 		Set<CartItem> cartItems = cart.getCartItems();

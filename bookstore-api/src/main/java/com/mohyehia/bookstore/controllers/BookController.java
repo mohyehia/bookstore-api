@@ -24,6 +24,8 @@ import com.mohyehia.bookstore.entities.Book;
 import com.mohyehia.bookstore.services.BookService;
 import com.mohyehia.bookstore.utils.ImageUtils;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/api/v1/books")
 public class BookController {
@@ -31,6 +33,7 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 	
+	@ApiOperation(value = "save new book to the database")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(value = {"", "/"})
 	public ResponseEntity<Book> saveBook(@RequestParam("image") MultipartFile file, @Valid @RequestPart Book book) {
@@ -42,16 +45,19 @@ public class BookController {
 		return new ResponseEntity<>(bookService.save(book), HttpStatus.CREATED);
 	}
 	
+	@ApiOperation(value = "return all books from database")
 	@GetMapping(value = {"", "/"})
 	public ResponseEntity<List<Book>> getBooks(){
 		return new ResponseEntity<>(bookService.findAll(), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "return a book from database by its id")
 	@GetMapping("/{id}")
 	public ResponseEntity<Book> findBookById(@PathVariable Long id){
 		return new ResponseEntity<>(bookService.findById(id), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "update an existing book by its id")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Book> updateBook(@PathVariable Long id, @Valid @RequestBody Book book){
@@ -59,6 +65,7 @@ public class BookController {
 		return new ResponseEntity<>(bookService.updateBook(book), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "remove an existing book from database by its id")
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteBook(@PathVariable Long id){
