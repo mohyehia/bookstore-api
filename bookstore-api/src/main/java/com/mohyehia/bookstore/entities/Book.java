@@ -1,5 +1,7 @@
 package com.mohyehia.bookstore.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,10 +12,13 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "BOOKS")
-public class Book {
+public class Book implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID", updatable = false, nullable = false)
+	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
 	
 	@NotEmpty(message = "Book title can not be empty")

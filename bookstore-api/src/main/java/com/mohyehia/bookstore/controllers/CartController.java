@@ -1,7 +1,6 @@
 package com.mohyehia.bookstore.controllers;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mohyehia.bookstore.entities.Cart;
 import com.mohyehia.bookstore.entities.CartItem;
-import com.mohyehia.bookstore.repositories.CartItemRepository;
 import com.mohyehia.bookstore.services.CartService;
 
 import io.swagger.annotations.ApiOperation;
@@ -25,10 +23,7 @@ import io.swagger.annotations.ApiOperation;
 public class CartController extends BaseController{
 	@Autowired
 	private CartService cartService;
-	
-	@Autowired
-	private CartItemRepository cartItemRepository;
-	
+		
 	@ApiOperation(value = "return shopping cart for a single user by his id")
 	@GetMapping("")
 	public ResponseEntity<List<Cart>> getAll(){
@@ -37,14 +32,14 @@ public class CartController extends BaseController{
 	
 	@ApiOperation(value = "get cart details by cartId")
 	@GetMapping("/{cartId}")
-	public ResponseEntity<List<CartItem>> getCartItems(@PathVariable Long cartId){
-		return new ResponseEntity<> (cartItemRepository.findByCartId(cartId), HttpStatus.OK);
+	public ResponseEntity<Cart> getCartItems(@PathVariable Long cartId){
+		return new ResponseEntity<> (cartService.getCartById(cartId), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "save new cart for the user")
 	@PostMapping("")
 	public ResponseEntity<Cart> saveCart(@RequestBody Cart cart){
-		Set<CartItem> cartItems = cart.getCartItems();
+		List<CartItem> cartItems = cart.getCartItems();
 		cart.setUserId(getCurrentUser().getId());
 		return new ResponseEntity<>(cartService.save(cart, cartItems), HttpStatus.CREATED);
 	}
