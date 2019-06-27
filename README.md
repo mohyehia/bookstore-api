@@ -3,4 +3,4 @@ A Restful API for an online bookstore that allows users to search books, get boo
 Each user can view his order history, store his basic information like billing address and shipping address.
 
 ## Teck Stack
-Spring boot, Spring security, Spring rest, JWT, MySql, Spring data jpa, Hibernate, Junit, Mockito, Swagger for api documentation.
+Spring boot - Spring security - Spring rest - JWT authentication - MySql - Spring data jpa - Hibernate - Junit - Mockito - Swagger for api documentation.
