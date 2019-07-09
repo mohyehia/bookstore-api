@@ -18,6 +18,7 @@ import com.mohyehia.bookstore.filters.AuthFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final String[] PUBLIC_ENDPOINTS = {
 			"/api/**/auth/**",
+			"/api/**/books/**",
 			"/v2/api-docs",
             "/swagger-resources/**",
             "/configuration/ui",
