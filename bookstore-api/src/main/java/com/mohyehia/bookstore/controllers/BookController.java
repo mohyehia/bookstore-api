@@ -73,4 +73,9 @@ public class BookController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
+	@GetMapping("/search/{keyword}")
+	public ResponseEntity<List<Book>> search(@PathVariable String keyword){
+		return new ResponseEntity<>(bookService.blurrySearch(keyword), HttpStatus.OK);
+	}
+	
 }
