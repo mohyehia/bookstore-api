@@ -3,6 +3,7 @@ package com.mohyehia.bookstore.services;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ import com.mohyehia.bookstore.entities.ApiUser;
 import com.mohyehia.bookstore.entities.Role;
 import com.mohyehia.bookstore.entities.UserBilling;
 import com.mohyehia.bookstore.entities.UserPayment;
+import com.mohyehia.bookstore.exceptions.BadRequestException;
 import com.mohyehia.bookstore.exceptions.ConflictException;
 import com.mohyehia.bookstore.repositories.RoleRepository;
 import com.mohyehia.bookstore.repositories.UserPaymentRepository;
@@ -36,17 +38,19 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private UserPaymentRepository userPaymentRepository;
 	
-	@Bean
-	private PasswordEncoder passwordEncoder() {
+	@Bean(autowireCandidate = true)
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		ApiUser user = userRepository.findByEmail(username).get();
-		if(user == null) 
-			throw new UsernameNotFoundException("Username {" + username + "} not found!");
-		return user;
+		try {
+			ApiUser user = userRepository.findByEmail(username).get();
+			return user;
+		} catch (NoSuchElementException e) {
+			throw new BadRequestException(String.format("No user account with the email address [%s] was found in database.", username));
+		}
 	}
 	
 	public ApiUser save(ApiUser user) {
